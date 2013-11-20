@@ -1,0 +1,38 @@
+[TODO]
+Dai
+* Email Enhancements:
+- Viet GET / SET cho setting "From" name
+- TEST timezone: User/Site have to be different for multiple users
+- Create ticket ...
+
+
+Nam
+Continue on JUnit task
+
+
+
+
+Dung
+* Stream Enhancements:
+[1.1]
+- Check shareable content xem co duoc share khong? - Tach ra mot ham rieng
+- Add more 1 field Group privacy to Group table (In future check INTERNAL/EXTERNAL mode)
+- In future ensure to display all old content of Group to all new members
+[1.2]
+- Tinh truoc add them nut share giong' nhu in Drupal (Same link as Drupal link) 
+[1.3]
+- 
+[2.0]
+- 
+* Update Google docs 
+
+
+HA
+* Email Enhancements
+- Talk to Adam xem co viet' ca? phan` 3.0 hay khong?
+* Stream Enhancements:
+ - Point [3.2]: Discuss with GO to ensure to changed to Calendar Filter?
+
+
+
+

@@ -1,0 +1,135 @@
+[SESSION]
+1. Session: Have a table mapping one-one giua drupal va liftweb session
+	- Session timeout on Liftweb khoang 20h
+	- Session on drupal co the ko time out (Can verify with GO)
+	- Ke ca voi Anonymous user cua Drupal minh cung co 1 service session tuong ung'
+
+2. Khi Service session expired truoc Drupal session: 
+	- Liftweb ko biet duoc user la gi
+	- Css khong co'
+
+Neu muon minh co the control duoc trang khi comet load ko co session.
+
+3. Neu Drupal session expried truoc service session: 
+	- Drupal yeu cau user login lai
+	- Service se cap 1 session moi' (ko dung lai session cu~)
+
+4. Khi tat browser Drupal van nho cookies cho user cu~ nhung liftweb sinh ra session moi'
+
+
+5. Neu liftweb session expried thi can viet code delete session do'
+
+
+6. Minh chua dung duoc co che clean up session cua Drupal: Nhung session ma qua' 1 time limit thi xoa' tat'
+Hien nay minh chua lam duoc vi cassandra chua support tot cho viec nay.
+
+7. Keep alive session when user active (refresh or reload)
+Hien nay dang su dung Session Database config trong default.props :
+	///session configuration
+	session.container = database
+	session.expired = 72000
+
+Code Session nam trong file : "com.goingon.common.SessionUser"
+
+[USER]
+- Drupal biet client id thong qua 1 drupal variable
+- UI Config : /admin/goservices
+- Drush: drush t2s --config=clientid,basepath,host,port (defaut: basepath=das, host=localhost, port=8080)
+- Data structure bi closely model theo Drupal data structure, in future minh se genaral data structure cua service
+- Trong schema ko can define bat ky 1 column name nao ca?
+
+
+[MessageInstance]
+Mapping giua Drupal va Liftweb
+
+[NewItemNumber]
+
+
+[Version]
+- Them field cho table nay: description de giai thich cac thay doi trong version do'
+
+[Content]
+
+[Timeline_Content]
+History cua thang Content
+
+[Comments]
+
+
+[Content_Comments]
+Link giua Content va Comment: Cap path cho comment khi gui notification email (path cua content)
+
+[User_Users]
+Link friends cua cac Users
+
+[User_Groups]
+Liet ke tat ca cac group cua 1 user bat ky
+
+[Group_Users]
+List ke tat ca cac member cua Group
+
+[Group]
+Luu Community va Group
+
+[Dsl]
+
+
+
+
+[TODO]
+- /admin/goservices : Can remove configuration "Time of DELETE ..."
+- Nam can update schema: Remove column_metadata cho table USER
+- Dung can viet 1 API de get du lieu tu Cassandra cho de doc data (default la bytes)
+- Change name NewItemNumber -> UpdateCounter
+- Them 1 Column Family: EmailLog
+
+
+
+
+
+
+
+[TODO 4.8]
+- Clean up code trong branch moi nhat: AccessDb
+- Nhac Adam goi API cho Notifications (Comment API, Connection Request ...)
+
+
+
+
+
+
+[TODO FOR TEAM]
+1. Dung: 
+	- Goi Drupal code de call nhung event con lai : Add comment, Connection ...
+	(https://trac.goingon.us/trac/goingon/wiki/Platform6x4x/ManageUserNotifications)
+	- Config API + DRUPAL EXAMPLE
+	- Fix 4.7.1 bugs
+
+2. Dai
+	- Blacklist API + Java Test
+	- Email Logging
+
+3. Nam  - utf8 done
+	- Blacklist + Test lai Notifications
+	- 4.7.1 Fix
+
+4. nice to have
+  - cac bug cua activity stream ma minh push tu 4.7.1 sang 4.8
+  - cac todo o tren
+  - improve nagios api / version table.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
