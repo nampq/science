@@ -18,7 +18,7 @@ public class ReadData {
     
     private static SimpleDateFormat y_M = new SimpleDateFormat("yyyyMM");
 
-    public void readFromFile(String filePath, String day) {
+    public void readFromFile(String filePath, String startDate) {
     	try{
             // Open the file that is the first
             // command line parameter
@@ -29,43 +29,53 @@ public class ReadData {
 
             // Create file
             FileWriter outFile = new FileWriter("db.csv", true);
-            FileWriter dbbkFile = new FileWriter("db_bk.csv", true);
+            //FileWriter dbbkFile = new FileWriter("db_bk.csv", true);
             FileWriter normalFile = new FileWriter("normal.csv", true);
             FileWriter dataFile = new FileWriter("data.csv", true);
-            FileWriter normalbkFile = new FileWriter("normal_bk.csv", true);
+            //FileWriter normalbkFile = new FileWriter("normal_bk.csv", true);
             FileWriter dailyFile = new FileWriter("daily.csv", true);
             FileWriter dailyFile2 = new FileWriter("daily2.csv", true);
             BufferedWriter dbOut = new BufferedWriter(outFile);
-            BufferedWriter dbbkOut = new BufferedWriter(dbbkFile);
-            BufferedWriter normalbkOut = new BufferedWriter(normalbkFile);
+            //BufferedWriter dbbkOut = new BufferedWriter(dbbkFile);
+            //BufferedWriter normalbkOut = new BufferedWriter(normalbkFile);
             BufferedWriter normalOut = new BufferedWriter(normalFile);
             BufferedWriter dataOut = new BufferedWriter(dataFile);
             BufferedWriter dailyOut = new BufferedWriter(dailyFile);
             BufferedWriter dailyOut2 = new BufferedWriter(dailyFile2);
+            
+            //calculate date
+            Date start = df.parse(startDate);
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(start);
+            String day = df.format(start);
 
             String line;
             int i =0;
             //Read File Line By Line
             String dbStr = "";
             String norStr = "";
-            String daily =  "";
-            String daily2 =  "";
+            String daily = "=================== Ngay " + day + " =================== \n";
+            String daily2 = "=================== Ngay " + day + " =================== \n";
             while ((line = br.readLine()) != null)   {
                 // Print the content on the console
                 System.out.println (line);
                 
                 if (line == null) continue;
                 
-                if (line.indexOf("==") >= 0) {
-                	daily += line + " \n";
-                	daily2 +=  line + " \n";//"=================== Ngay "+line.replace("=", "") + " =================== \n";
+                if (line.indexOf("==") >= 0) {// Dac diem nhan biet start ngay moi'
+                	cal.add(Calendar.DAY_OF_MONTH, 1);
+                	day = df.format(cal.getTime());
+                	daily += "=================== Ngay " + day + " =================== \n";
+                	daily2 += "=================== Ngay " + day + " =================== \n";
+                	dbStr += "\n";
+                	norStr += "\n";
                 	i = 0;
                 	continue;
                 }
-                
-                
-                //String orgLine = ""+line;
+                //Neu dung ham nay khi read file "daily.csv" can sua lai
+                //case "Giai DB" truoc khi in ra output
                 String strLine = convertInputToOutput(line);
+                System.out.println("Convert the output: " + strLine);
                 if(strLine != ""){
                     //For special
                     if(i == 0) {
@@ -77,6 +87,7 @@ public class ReadData {
                     	norStr += strLine;
                     }
                 }
+                //Start build the "daily2.txt"
                 if(line != ""){
                 	daily += line + "\n";
                 	
@@ -93,19 +104,20 @@ public class ReadData {
                 			daily2 += num.trim() + " \n";
                 		}
                 	}
-                	
-                }
+                }//end of build "daily2.txt"
+                
+                //go to next line
                 i++;
             }//end of read data
             
             //write to file
             if(dbStr != "" && norStr != "") {
-                dbOut.write(dbStr.substring(0,dbStr.length()-1) +" \n");
-                normalOut.write(norStr.substring(0,norStr.length()-1) +" \n");
-                dataOut.write(norStr.substring(0,norStr.length()-1) +" \n");
+                dbOut.write(dbStr.substring(0, dbStr.length()) +" \n");
+                normalOut.write(norStr.substring(0, norStr.length()) +" \n");
+                dataOut.write(norStr.substring(0, norStr.length()) +" \n");
                 
-                dbbkOut.write(dbStr.substring(0,dbStr.length()-1) +" \n");
-                normalbkOut.write(norStr.substring(0,norStr.length()-1) +" \n");
+                //dbbkOut.write(dbStr.substring(0, dbStr.length()-1) +" \n");
+                //normalbkOut.write(norStr.substring(0, norStr.length()-1) +" \n");
                 
             }
             if(daily != ""){
@@ -116,8 +128,8 @@ public class ReadData {
             in.close();
             normalOut.close();
             dbOut.close();
-            dbbkOut.close();
-            normalbkOut.close();
+            //dbbkOut.close();
+            //normalbkOut.close();
             dailyOut.close();
             dailyOut2.close();
             dataOut.close();
@@ -135,7 +147,10 @@ public class ReadData {
             	//If seperator is ";"
                 if(arr.length <= 2) arr = input.trim().split(" ");
                 //If line is text
-                if(input.startsWith("G") || input.startsWith("g")) return out;
+                //Case read tu daily.csv can fix 
+                if(input.startsWith("G") || input.startsWith("g")) {
+                	return out;
+                }
                 
                 int length = arr.length;
                 for (int i = 0; i < length; i++){
@@ -334,7 +349,7 @@ public class ReadData {
 
 
     public static void main(String[] args) {
-        new ReadData().readFromFile("input.csv", "error");
+        new ReadData().readFromFile("input.csv", args[0]);
         //List<String> dates = new ReadData().getKeys("20120801","20120902");
         //System.out.println(dates.get(dates.size()-1));
         //new ReadData().readData("20120801", "20120902", "data.csv");
