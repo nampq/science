@@ -80,7 +80,7 @@ public class ReadData {
                     //For special
                     if(i == 0) {
                     	line =  "Giai DB: " + line;
-                        dbStr += day + " ;" +strLine;
+                        dbStr += day + " ;" + strLine.substring(0, strLine.length()-1);
                         norStr += day + " ;" +strLine;
                     } else {
                     	//For normal
@@ -112,9 +112,9 @@ public class ReadData {
             
             //write to file
             if(dbStr != "" && norStr != "") {
-                dbOut.write(dbStr.substring(0, dbStr.length()) +" \n");
-                normalOut.write(norStr.substring(0, norStr.length()) +" \n");
-                dataOut.write(norStr.substring(0, norStr.length()) +" \n");
+                dbOut.write(dbStr +" \n");
+                normalOut.write(norStr +" \n");
+                dataOut.write(norStr +" \n");
                 
                 //dbbkOut.write(dbStr.substring(0, dbStr.length()-1) +" \n");
                 //normalbkOut.write(norStr.substring(0, norStr.length()-1) +" \n");
