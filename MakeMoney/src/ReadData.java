@@ -93,21 +93,19 @@ public class ReadData {
                 	
                 	String[] arr = line.split(" ");
                 	String [] arrTab = line.split("\\t");
-                	if (arr.length < arrTab.length) {
+                	if (arr.length <= arrTab.length) {
                 		arr = arrTab;
                 	}
                 	//Pattern pattern = Pattern.compile("^(\\d+.*|-\\d+.*)");
                 	
                 	//search for text
-                	Pattern pattern = Pattern.compile("\\w.*");
+                	Pattern pattern = Pattern.compile("[a-zA-Z]+");
                     Matcher matcher = null;
                 	for(String num : arr) {
                 		matcher = pattern.matcher(num);
                 		//if not match then it's the number
-                		if(!matcher.matches() || Character.isDigit(num.charAt(0))){
-                			if (num.trim().length() > 2) {
-                				daily2 += num.trim() + " \n";
-                			}
+                		if(!matcher.matches() && num.trim().length() > 0 && Character.isDigit(num.charAt(0))){
+                			daily2 += num.trim() + " \n";
                 		}
                 	}
                 }//end of build "daily2.txt"
@@ -158,13 +156,14 @@ public class ReadData {
                 
                 //If line is text
                 //Case read tu daily.csv can fix 
-                if(input.startsWith("G") || input.startsWith("g")) {
+                /*if(input.startsWith("G") || input.startsWith("g")) {
                 	return out;
-                }
+                }*/
                 
                 int length = arr.length;
                 for (int i = 0; i < length; i++){
                     String item = arr[i].trim();
+                    if (!Character.isDigit(item.charAt(0))) continue;
                     if(item != "" && (item.length() >= 2)){
                         String num = item.substring(item.length()-2);
                         out +=  num + ";";
@@ -360,7 +359,7 @@ public class ReadData {
 
     public static void main(String[] args) {
         new ReadData().readFromFile("input.csv", args[0]);
-        //new ReadData().readFromFile("input.csv", "20151229");
+//        new ReadData().readFromFile("input.csv", "20151229");
         //List<String> dates = new ReadData().getKeys("20120801","20120902");
         //System.out.println(dates.get(dates.size()-1));
         //new ReadData().readData("20120801", "20120902", "data.csv");
